@@ -3,6 +3,13 @@ import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'services/shared_preferences_service.dart';
+
+// This is our global ServiceLocator
+GetIt getIt = GetIt.instance;
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -28,6 +35,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   Bloc.observer = const AppBlocObserver();
 
   // Add cross-flavor configuration here
+  getIt.registerSingletonAsync(SharedPreferencesService.getInstance);
 
   runApp(await builder());
 }
