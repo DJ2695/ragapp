@@ -1,30 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ragapp_frontend/chat_config/cubit/chat_config_cubit.dart';
-import 'package:ragapp_frontend/counter/counter.dart';
+import 'package:ragapp_frontend/bloc/chat_config/cubit/chat_config_cubit.dart';
 import 'package:ragapp_frontend/l10n/l10n.dart';
+import 'package:ragapp_frontend/ui/admin_page/widgets/agent_config.dart';
+import 'package:ragapp_frontend/ui/admin_page/widgets/model_config.dart';
+import 'package:ragapp_frontend/widgets/expandable_section.dart';
+import 'package:shadcn_ui/shadcn_ui.dart';
 
-class ChatConfigPage extends StatelessWidget {
-  const ChatConfigPage({super.key});
+import 'widgets/chat_config.dart';
 
-  @override
-  Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => ChatConfigCubit(),
-      child: const ChatConfigView(),
-    );
-  }
-}
-
-class ChatConfigView extends StatelessWidget {
-  const ChatConfigView({super.key});
+class AdminPage extends StatelessWidget {
+  const AdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     return Scaffold(
       appBar: AppBar(title: Text(l10n.counterAppBarTitle)),
-      body: const Center(child: CounterText()),
+      body: Row(
+        children: [
+          Expanded(
+            child: MultiBlocProvider(
+              providers: [
+                BlocProvider(
+                  create: (_) => ChatConfigCubit(),
+                ),
+              ],
+              child: ListView(
+                children: [
+                  ModelConfig(),
+                  ChatConfig(),
+                  AgentConfig(),
+                ],
+              ),
+            ),
+          ),
+          Expanded(child: Container()),
+        ],
+      ),
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.end,
