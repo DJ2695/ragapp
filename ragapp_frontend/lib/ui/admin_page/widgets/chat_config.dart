@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ragapp_frontend/mixins/form_spacing.dart';
 import 'package:ragapp_frontend/mixins/loaders.dart';
 import 'package:ragapp_frontend/widgets/expandable_section.dart';
 import 'package:ragapp_frontend/widgets/multi_input.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class ChatConfig extends StatelessWidget {
+class ChatConfig extends StatelessWidget with FormSpacing {
   ChatConfig({
     super.key,
   });
@@ -38,12 +39,15 @@ class ChatConfig extends StatelessWidget {
                 return null;
               },
             ),
-            const SizedBox(height: 16),
+            formSpacing(),
             ShadFormBuilderField(
-              label: const Text('Conversation questions'),
-              description: const Text("Add suggested questions to help users start a conversation with the app."),
-              builder: (state) => MultiInput(initialValues: ["Hey David", "Hey MAria"],)),
-            const SizedBox(height: 16),
+                label: const Text('Conversation questions'),
+                description: const Text(
+                    "Add suggested questions to help users start a conversation with the app."),
+                builder: (state) => MultiInput(
+                      initialValues: ["Hey David", "Hey MAria"],
+                    )),
+            formSpacing(),
             ShadButton(
               text: const Text('Submit'),
               onPressed: () {
@@ -55,6 +59,7 @@ class ChatConfig extends StatelessWidget {
                 }
               },
             ),
+            formSpacing()
           ],
         ),
       ),

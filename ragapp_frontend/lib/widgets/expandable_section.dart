@@ -25,7 +25,7 @@ class ExpandableSection extends StatefulWidget {
 
 class _ExpandableSectionState extends State<ExpandableSection> {
   final sharedPreferences = getIt.get<SharedPreferencesService>();
-  final expandableTheme = const ExpandableThemeData(useInkWell: false);
+
   final ExpandableController expandableController = ExpandableController();
 
   bool get expanded => expandableController.value;
@@ -44,6 +44,10 @@ class _ExpandableSectionState extends State<ExpandableSection> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = ShadTheme.of(context).colorScheme;
+    final expandableTheme =
+        ExpandableThemeData(useInkWell: false, iconColor: colorScheme.primary);
+
     return ShadCard(
         border: Border.all(color: Colors.grey.shade400),
         radius: BorderRadius.circular(12),
