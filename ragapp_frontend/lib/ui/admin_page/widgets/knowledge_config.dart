@@ -19,21 +19,6 @@ class KnowledgeConfig extends StatefulWidget {
 }
 
 class _KnowledgeConfigState extends State<KnowledgeConfig> with FormSpacing {
-  Widget? modelProvider;
-
-  Widget? getModelProvider(String? v) {
-    if (v == "Ollama") {
-      return OllamaForm();
-    }
-  }
-
-  @override
-  void initState() {
-    modelProvider =
-        getModelProvider(KnowledgeConfig.modelProviders.firstOrNull);
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return ExpandableSection(

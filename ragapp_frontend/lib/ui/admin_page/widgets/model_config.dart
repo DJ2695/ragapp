@@ -7,6 +7,8 @@ import 'package:ragapp_frontend/widgets/expandable_section.dart';
 import 'package:ragapp_frontend/widgets/multi_input.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
+import 'model_providers/azure_openai.dart';
+
 class ModelConfig extends StatefulWidget {
   const ModelConfig({
     super.key,
@@ -19,11 +21,15 @@ class ModelConfig extends StatefulWidget {
 }
 
 class _ModelConfigState extends State<ModelConfig> with FormSpacing {
+  final formKey = GlobalKey<ShadFormState>();
+
   Widget? modelProvider;
 
   Widget? getModelProvider(String? v) {
     if (v == "Ollama") {
-      return OllamaForm();
+      return OllamaForm(formKey: formKey);
+    } else if (v == "AzureOpenAI") {
+      return AzureOpenAI(formKey: formKey);
     }
   }
 
@@ -39,48 +45,51 @@ class _ModelConfigState extends State<ModelConfig> with FormSpacing {
       name: 'model-config',
       title: 'Model Config',
       description: 'Change to a different model or use another provider',
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ShadSelectFormField<String>(
-            id: 'model-providers',
-            initialValue: ModelConfig.modelProviders.firstOrNull,
-            onChanged: (v) {
-              setState(() {
-                modelProvider = getModelProvider(v);
-              });
-            },
-            options: ModelConfig.modelProviders
-                .map((mp) => ShadOption(value: mp, child: Text(mp)))
-                .toList(),
-            selectedOptionBuilder: (context, value) => value == 'none'
-                ? const Text('Select a model provider')
-                : Text(value),
-            placeholder: const Text('Select a model provider'),
-            validator: (v) {
-              if (v == null) {
-                return 'Please select a model provider.';
-              }
-              return null;
-            },
-          ),
-          if (modelProvider != null) ...[
+      child: ShadForm(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ShadSelectFormField<String>(
+              id: 'model-providers',
+              initialValue: ModelConfig.modelProviders.firstOrNull,
+              onChanged: (v) {
+                setState(() {
+                  modelProvider = getModelProvider(v);
+                });
+              },
+              options: ModelConfig.modelProviders
+                  .map((mp) => ShadOption(value: mp, child: Text(mp)))
+                  .toList(),
+              selectedOptionBuilder: (context, value) => value == 'none'
+                  ? const Text('Select a model provider')
+                  : Text(value),
+              placeholder: const Text('Select a model provider'),
+              validator: (v) {
+                if (v == null) {
+                  return 'Please select a model provider.';
+                }
+                return null;
+              },
+            ),
+            if (modelProvider != null) ...[
+              formSpacing(),
+              modelProvider!,
+            ],
             formSpacing(),
-            modelProvider!,
+            ShadButton(
+              text: const Text('Submit'),
+              onPressed: () {
+                // if (formKey.currentState!.saveAndValidate()) {
+                //   print(
+                //       'validation succeeded with ${formKey.currentState!.value}');
+                // } else {
+                //   print('validation failed');
+                // }
+              },
+            ),
           ],
-          formSpacing(),
-          ShadButton(
-            text: const Text('Submit'),
-            onPressed: () {
-              // if (formKey.currentState!.saveAndValidate()) {
-              //   print(
-              //       'validation succeeded with ${formKey.currentState!.value}');
-              // } else {
-              //   print('validation failed');
-              // }
-            },
-          ),
-        ],
+        ),
       ),
     );
   }
