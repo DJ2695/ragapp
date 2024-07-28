@@ -15,6 +15,7 @@ class AgentConfig extends StatelessWidget with FormSpacing {
     return ExpandableSection(
       name: 'agent-config',
       title: 'Agent Config',
+      icon: Icon(LucideIcons.bot),
       description: 'Config tools and agent',
       child: Column(
         children: [

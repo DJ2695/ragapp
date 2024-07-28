@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ragapp_frontend/mixins/form_spacing.dart';
 import 'package:ragapp_frontend/mixins/loaders.dart';
-import 'package:ragapp_frontend/ui/admin_page/widgets/model_providers/ollama.dart';
+import 'package:ragapp_frontend/ui/admin_page/config_view/model_providers/ollama.dart';
 import 'package:ragapp_frontend/widgets/expandable_section.dart';
 import 'package:ragapp_frontend/widgets/multi_input.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -27,7 +27,7 @@ class _ModelConfigState extends State<ModelConfig> with FormSpacing {
 
   Widget? getModelProvider(String? v) {
     if (v == "Ollama") {
-      return OllamaForm(formKey: formKey);
+      return Ollama(formKey: formKey);
     } else if (v == "AzureOpenAI") {
       return AzureOpenAI(formKey: formKey);
     }
@@ -44,6 +44,7 @@ class _ModelConfigState extends State<ModelConfig> with FormSpacing {
     return ExpandableSection(
       name: 'model-config',
       title: 'Model Config',
+      icon: Icon(LucideIcons.settings),
       description: 'Change to a different model or use another provider',
       child: ShadForm(
         key: formKey,

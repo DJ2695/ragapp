@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ragapp_frontend/mixins/form_spacing.dart';
 import 'package:ragapp_frontend/mixins/loaders.dart';
-import 'package:ragapp_frontend/ui/admin_page/widgets/model_providers/ollama.dart';
+import 'package:ragapp_frontend/ui/admin_page/config_view/model_providers/ollama.dart';
 import 'package:ragapp_frontend/widgets/expandable_section.dart';
 import 'package:ragapp_frontend/widgets/multi_input.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
@@ -24,6 +24,7 @@ class _KnowledgeConfigState extends State<KnowledgeConfig> with FormSpacing {
     return ExpandableSection(
       name: 'knowledge-config',
       title: 'Knowledge Config',
+      icon: Icon(LucideIcons.brain),
       description: 'Manage your own data to chat with.',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -18,6 +18,7 @@ class ChatConfig extends StatelessWidget with FormSpacing {
     return ExpandableSection(
       name: "chat-config",
       title: "Chat Config",
+      icon: Icon(LucideIcons.messageCircle),
       description: "Config how the chatbot behaves and interacts with the user",
       child: ShadForm(
         key: formKey,

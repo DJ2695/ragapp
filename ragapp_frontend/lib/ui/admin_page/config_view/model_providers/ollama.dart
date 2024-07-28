@@ -2,15 +2,15 @@ import 'package:flutter/widgets.dart';
 import 'package:ragapp_frontend/mixins/form_spacing.dart';
 import 'package:shadcn_ui/shadcn_ui.dart';
 
-class OllamaForm extends StatefulWidget {
-  const OllamaForm({required this.formKey, super.key});
+class Ollama extends StatefulWidget {
+  const Ollama({required this.formKey, super.key});
   final GlobalKey<ShadFormState> formKey;
 
   @override
-  State<OllamaForm> createState() => _OllamaFormState();
+  State<Ollama> createState() => _OllamaState();
 }
 
-class _OllamaFormState extends State<OllamaForm> with FormSpacing {
+class _OllamaState extends State<Ollama> with FormSpacing {
   static List<String> embeddingModels = ['nomic-embed-text'];
 
   Future<List<String>> fetchModels(String type, String baseUrl) async {

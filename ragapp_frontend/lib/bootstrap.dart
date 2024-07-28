@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get_it/get_it.dart';
+import 'package:ragapp_frontend/services/code_highlighter_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'services/shared_preferences_service.dart';
@@ -27,7 +28,19 @@ class AppBlocObserver extends BlocObserver {
   }
 }
 
+Future<void> setup() async {
+  // Register SharedPreferencesService
+  final sharedPreferencesService = await SharedPreferencesService.getInstance();
+  getIt.registerSingleton<SharedPreferencesService>(sharedPreferencesService);
+
+  // Register CodeHighlighterService
+  final codeHighlighterService = await CodeHighlighterService.getInstance();
+  getIt.registerSingleton<CodeHighlighterService>(codeHighlighterService);
+}
+
 Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   FlutterError.onError = (details) {
     log(details.exceptionAsString(), stackTrace: details.stack);
   };
@@ -35,7 +48,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   Bloc.observer = const AppBlocObserver();
 
   // Add cross-flavor configuration here
-  getIt.registerSingletonAsync(SharedPreferencesService.getInstance);
+  await setup();
 
   runApp(await builder());
 }

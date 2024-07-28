@@ -11,6 +11,7 @@ class ExpandableSection extends StatefulWidget {
     required this.child,
     this.description,
     this.isLoading,
+    this.icon,
     super.key,
   });
   final String name;
@@ -18,6 +19,7 @@ class ExpandableSection extends StatefulWidget {
   final Widget child;
   final String? description;
   final bool? isLoading;
+  final Icon? icon;
 
   @override
   State<ExpandableSection> createState() => _ExpandableSectionState();
@@ -48,46 +50,60 @@ class _ExpandableSectionState extends State<ExpandableSection> {
     final expandableTheme =
         ExpandableThemeData(useInkWell: false, iconColor: colorScheme.primary);
 
-    return ShadCard(
-        border: Border.all(color: Colors.grey.shade400),
-        radius: BorderRadius.circular(12),
-        content: ExpandablePanel(
-          controller: expandableController,
-          theme: expandableTheme,
-          header: GestureDetector(
-            onTap: expandableController.toggle,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.title,
-                  style: ShadTheme.of(context).textTheme.h4,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 7.5),
-                  child: const Divider(
-                    height: 1.5,
+    return Container(
+      margin: EdgeInsets.only(bottom: 15),
+      child: ShadCard(
+          border: Border.all(color: Colors.grey.shade400),
+          radius: BorderRadius.circular(12),
+          content: ExpandablePanel(
+            controller: expandableController,
+            theme: expandableTheme,
+            header: GestureDetector(
+              onTap: expandableController.toggle,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      if (widget.icon != null)
+                        Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: widget.icon,
+                        ),
+                      Expanded(
+                        child: Text(
+                          widget.title,
+                          style: ShadTheme.of(context).textTheme.h4,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                if (widget.description != null)
-                  Text(
-                    widget.description!,
-                    style: ShadTheme.of(context)
-                        .textTheme
-                        .list
-                        .copyWith(fontStyle: FontStyle.italic),
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 7.5),
+                    child: const Divider(
+                      height: 1.5,
+                    ),
                   ),
-                const SizedBox(height: 15),
-              ],
+                  if (widget.description != null)
+                    Text(
+                      widget.description!,
+                      style: ShadTheme.of(context)
+                          .textTheme
+                          .list
+                          .copyWith(fontStyle: FontStyle.italic),
+                    ),
+                  const SizedBox(height: 15),
+                ],
+              ),
             ),
+            collapsed: const SizedBox.shrink(),
+            expanded: Container(
+              padding: const EdgeInsets.only(left: 10),
+              child: widget.child,
+            ),
+          )
+          //),
           ),
-          collapsed: const SizedBox.shrink(),
-          expanded: Container(
-            padding: const EdgeInsets.only(left: 10),
-            child: widget.child,
-          ),
-        )
-        //),
-        );
+    );
   }
 }
