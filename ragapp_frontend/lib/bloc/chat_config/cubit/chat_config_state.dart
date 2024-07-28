@@ -3,14 +3,12 @@ part of 'chat_config_cubit.dart';
 @immutable
 sealed class ChatConfigState {}
 
-final class ChatConfigInitial extends ChatConfigState {}
-
 final class ChatConfigLoading extends ChatConfigState {}
 
 final class ChatConfigLoaded extends ChatConfigState {
-  ChatConfigLoaded(this.config);
+  ChatConfigLoaded(this.chatConfig);
 
-  final Map config;
+  final ChatConfig chatConfig;
 }
 
 final class ChatConfigError extends ChatConfigState {

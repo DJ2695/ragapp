@@ -54,7 +54,7 @@ class _AdminPageState extends State<AdminPage> {
                         padding: EdgeInsets.only(right: 15),
                         children: [
                           ModelConfig(),
-                          ChatConfig(),
+                          ChatConfigSection(),
                           AgentConfig(),
                           KnowledgeConfig()
                         ],
@@ -101,7 +101,7 @@ class CounterText extends StatelessWidget {
 
     String data = "no data";
     if (state.runtimeType == ChatConfigLoaded) {
-      data = (state as ChatConfigLoaded).config.toString();
+      data = (state as ChatConfigLoaded).chatConfig.toString();
     }
 
     return Text(data, style: theme.textTheme.displaySmall);

@@ -1,42 +1,30 @@
-import 'dart:io';
-
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:ragapp_frontend/models/chat_config/chat_config.dart';
+import 'package:ragapp_frontend/repositories/chat_config_repo.dart';
 part 'chat_config_state.dart';
 
 class ChatConfigCubit extends Cubit<ChatConfigState> {
-  ChatConfigCubit() : super(ChatConfigInitial()) {
-    _dio = Dio();
+  ChatConfigCubit() : super(ChatConfigLoading()) {
+    getChatConfig();
   }
-  final String apiUrl =
-      'http://localhost:8000/api/management/config/chat'; // Replace with your actual API URL
-  late Dio _dio;
 
-  Future read() async {
+  final chatConfigRepository = ChatConfigRepository();
+
+  Future getChatConfig() async {
     emit(ChatConfigLoading());
-    try {
-      final response = await _dio.request(this.apiUrl);
+    final response = await chatConfigRepository.getChatConfig();
+    response.fold(
+      (e) => emit(ChatConfigError(e.toString())),
+      (chatConfig) => emit(ChatConfigLoaded(chatConfig)),
+    );
+  }
 
-      if (response.statusCode == 200) {
-        // Optionally handle the response from the backend if needed
-        final data = response.data;
-        Map config = data as Map;
-        emit(ChatConfigLoaded(config));
-      } else {
-        emit(ChatConfigError('Failed to send message'));
-      }
-    } on DioException catch (e) {
-      if (e.response != null) {
-        print(e.response?.data);
-        print(e.response?.headers);
-        print(e.response?.requestOptions);
-      } else {
-        // Something happened in setting up or sending the request that triggered an Error
-        print(e.requestOptions);
-        print(e.message);
-        emit(ChatConfigError(e.message!));
-      }
-    }
+  Future updateChatConfig(ChatConfig chatConfig) async {
+    final response = await chatConfigRepository.updateChatConfig(chatConfig);
+    response.fold(
+      (e) => emit(ChatConfigError(e.toString())),
+      (c) => emit(ChatConfigLoaded(c ?? chatConfig)),
+    );
   }
 }
